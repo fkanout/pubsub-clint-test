@@ -1,5 +1,3 @@
-
-
 const Koa = require('koa');
 const Router = require('koa-router')
 const PubSub = require('appc-pubsub')
@@ -18,13 +16,15 @@ app.use(bodyParser());
 
 //Event handler
 const eventErrorHandler = (err) => console.error(`PubSub unauthorized error | ${err}`)
-const eventSentHandler = (info) => console.info(info.statusCode)
+const eventSentHandler = (info) => console.info('Sent event: HTTP -', info.statusCode)
 const eventHandler = (event) => console.info('Received event:', event)
+const eventConfiguredHandler = (config) => console.info('Config:', config)
 
 // Event listeners
 pubSub.on('unauthorized', eventErrorHandler)
 pubSub.on('response', eventSentHandler)
 pubSub.on('event:lighthouse.test.report.**', eventHandler)
+pubSub.on('configured', eventConfiguredHandler)
 
 
 //routes
