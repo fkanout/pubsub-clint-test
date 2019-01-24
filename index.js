@@ -8,9 +8,9 @@ const router = new Router();
 const bodyParser = require('koa-bodyparser');
 
 const pubSub = new PubSub({
-    key: process.env.MML_APPCPUBSUB_KEY,
-    secret: process.env.MML_APPCPUBSUB_SECRET,
-    url: process.env.MML_APPCPUBSUB_URL
+    key: process.env.PUBSUB_TEST_APPCPUBSUB_KEY,
+    secret: process.env.PUBSUB_TEST_APPCPUBSUB_SECRET,
+    url: process.env.PUBSUB_TEST_APPCPUBSUB_URL
 });
 
 app.use(router.routes());
