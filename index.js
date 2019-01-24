@@ -29,10 +29,10 @@ pubSub.on('configured', eventConfiguredHandler)
 
 //routes
 router.post('/events', async (ctx, next)=>{
-    pubSub.publish(`lighthouse.test.report.${ctx.query.eventType}`, {test: 'true'})
+    pubSub.publish(`lighthouse.report.${ctx.query.eventType}`, {test: 'true'})
     ctx.body= {
         success: true,
-        event: `lighthouse.test.report.${ctx.query.eventType}`
+        event: `lighthouse.report.${ctx.query.eventType}`
     }
     await next()
 })
