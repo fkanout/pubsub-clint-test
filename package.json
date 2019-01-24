@@ -1,7 +1,7 @@
 {
   "name": "pubsub-clint-test",
   "version": "1.0.0",
-  "description": "",
+  "description": "A PubSub client for test",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
