@@ -11,8 +11,8 @@ const pubSub = new PubSub({
     url: process.env.PUBSUB_TEST_APPCPUBSUB_URL
 });
 
-app.use(router.routes());
 app.use(bodyParser());
+app.use(router.routes());
 
 //Event handler
 const eventErrorHandler = (err) => console.error(`PubSub unauthorized error | ${err}`)
@@ -23,7 +23,7 @@ const eventConfiguredHandler = (config) => console.info('Config:', config)
 // Event listeners
 pubSub.on('unauthorized', eventErrorHandler)
 pubSub.on('response', eventSentHandler)
-pubSub.on('event:lighthouse.report.**', eventHandler)
+// pubSub.on('event:lighthouse.report.**', eventHandler)
 pubSub.on('configured', eventConfiguredHandler)
 
 
@@ -37,14 +37,15 @@ router.post('/events', async (ctx, next)=>{
     await next()
 })
 router.post('/webhook', async (ctx, next)=>{
+    ctx.body = ctx;     
     console.info('WebHook has been called');
-    console.info('WebHook for topic', ctx.request.body.topic); 
-    console.info('WebHook headers', ctx.request.headers); 
-    pubSub.handleWebhook(ctx.request, ctx.response)
-    ctx.body = {
-        success: true,
-        pubSubConsumingEnabled: true
-    }
+    console.info('WebHook for topic', ctx); 
+    // console.info('WebHook headers', ctx.request.headers); 
+    // pubSub.handleWebhook(ctx.request, ctx.response)
+    // ctx.body = {
+    //     success: true,
+    //     pubSubConsumingEnabled: true
+    // }
     await next()
 })
 router.get('/arrowPing.json', async (ctx, next) => {
