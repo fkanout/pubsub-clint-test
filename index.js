@@ -30,10 +30,18 @@ pubSub.on('event:lighthouse.test.report.**', eventHandler)
 //routes
 router.post('/events', async (ctx, next)=>{
     pubSub.publish(`lighthouse.test.report.${ctx.query.eventType}`, {test: 'true'})
+    ctx.body= {
+        success: true,
+        event: `lighthouse.test.report.${ctx.query.eventType}`
+    }
     await next()
 })
 router.post('/webhook', async (ctx, next)=>{
     pubSub.handleWebhook(ctx.req, ctx.res)
+    ctx.body = {
+        success: true,
+        pubSubConsumingEnabled: true
+    }
     await next()
 })
 router.get('/arrowPing.json', async (ctx, next) => {
