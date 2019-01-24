@@ -32,4 +32,12 @@ router.post('/webhook', async (ctx, next)=>{
     await next()
 })
 
-app.listen(process.env.PUBSUB_TEST_PORT || 80)
+
+router.get('/arrowPing.json', async (ctx, next) => {
+    ctx.body = {
+      success: true
+    }
+    await next()
+  })
+
+app.listen(process.env.PUBSUB_TEST_PORT || 3000)
