@@ -23,7 +23,7 @@ const eventConfiguredHandler = (config) => console.info('Config:', config)
 // Event listeners
 pubSub.on('unauthorized', eventErrorHandler)
 pubSub.on('response', eventSentHandler)
-pubSub.on('event:lighthouse.test.report.*', eventHandler)
+pubSub.on('event:lighthouse.report.**', eventHandler)
 pubSub.on('configured', eventConfiguredHandler)
 
 
