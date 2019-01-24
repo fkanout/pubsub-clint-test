@@ -5,7 +5,7 @@ const Router = require('koa-router')
 const PubSub = require('appc-pubsub')
 const app = new Koa();
 const router = new Router();
-
+const bodyParser = require('koa-bodyparser');
 
 const pubSub = new PubSub({
     key: process.env.MML_APPCPUBSUB_KEY,
@@ -13,26 +13,29 @@ const pubSub = new PubSub({
     url: process.env.MML_APPCPUBSUB_URL
 });
 
-const errorHandler = (err) => console.error(`PubSub unauthorized error | ${err}`)
-const infoHandler = (info) => console.info(info.statusCode)
-
-pubSub.on('unauthorized', errorHandler)
-pubSub.on('response', infoHandler)
-
 app.use(router.routes());
+app.use(bodyParser());
+
+//Event handler
+const eventErrorHandler = (err) => console.error(`PubSub unauthorized error | ${err}`)
+const eventSentHandler = (info) => console.info(info.statusCode)
+const eventHandler = (event) => console.info('Received event:', event)
+
+// Event listeners
+pubSub.on('unauthorized', eventErrorHandler)
+pubSub.on('response', eventSentHandler)
+pubSub.on('event:lighthouse.test.report.**', eventHandler)
 
 
-router.get('/webhook',async (ctx, next)=>{
-    pubSub.on('event:')
+//routes
+router.post('/events', async (ctx, next)=>{
+    pubSub.publish(`lighthouse.test.report.${ctx.query.eventType}`, {test: 'true'})
     await next()
 })
-
 router.post('/webhook', async (ctx, next)=>{
-    pubSub.publish('com.axway.appc-module.test', {loaded: 'true'})
+    pubSub.handleWebhook(ctx.req, ctx.res)
     await next()
 })
-
-
 router.get('/arrowPing.json', async (ctx, next) => {
     ctx.body = {
       success: true
