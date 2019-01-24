@@ -38,8 +38,8 @@ router.post('/events', async (ctx, next)=>{
 })
 router.post('/webhook', async (ctx, next)=>{
     console.info('WebHook has been called');
-    console.info('WebHook for topic', ctx.req.body.topic); 
-    pubSub.handleWebhook(ctx.req, ctx.res)
+    console.info('WebHook for topic', ctx.request.body.topic); 
+    pubSub.handleWebhook(ctx.request, ctx.response)
     ctx.body = {
         success: true,
         pubSubConsumingEnabled: true
